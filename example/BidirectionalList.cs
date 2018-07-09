@@ -5,6 +5,20 @@ namespace Smarteck.Structure
     
     public class Bidirectionallist
     {
+        public class Element
+        {
+            int _data;
+            Element _next;
+            Element _previous;
+
+            public int Data { get; set; }
+            public Element Previous { get; set; }
+            public Element Next { get; set; }
+            public Element(int data)
+            {
+                this._data = data;
+            }
+        }
         Element _head;
         Element _tail;
         int _сount;
@@ -280,20 +294,7 @@ namespace Smarteck.Structure
         }
     }
 
-    public class Element
-    {
-        int _data;
-        Element _next;
-        Element _previous;
-
-        public int Data { get; set;}
-        public Element Previous { get; set; }
-        public Element Next{ get;set; }
-        public Element(int data) 
-        {
-            this._data = data;
-        }
-    }
+    
     
 
 }
