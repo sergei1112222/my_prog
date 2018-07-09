@@ -1,84 +1,82 @@
 ﻿using System;
 
-namespace ACme.Collections
+namespace Smarteck.Structure
 {
     
-    public class BidirectionalList
+    public class Bidirectionallist
     {
-        private element head;
-        private element tail;
-        private int count;
-        public BidirectionalList()
+        Element _head;
+        Element _tail;
+        int _сount;
+
+        public Bidirectionallist()
         {
-            this.head = null;
-            this.tail = null;
-            this.count = 0;
+            _head = null;
+            _tail = null;
+			_сount = 0;
         }
-        public void push_tail(element _el)
+
+        public void PushTail(Element el)
         {
-            if (this.head == null)
-            {
-                this.head = _el;
-            }
+            if (_head == null) { _head = el; }
             else
             {
-                this.tail.Previous = _el;
-                _el.Next = this.tail;
+                _tail.Previous = el;
+				el.Next = _tail;
             }
-            this.tail = _el;
-            this.count++;
+            _tail = el;
+			_сount++;
         }
-        public void push_head(element _el)
+
+        public void PushHead(Element el)
         {
-            if (tail == null)
-            {
-                this.tail = _el;
-            }
+            if (_tail == null) { _tail = el; }
             else
             {
-                this.head.Next = _el;
-                _el.Previous = this.head;
+                _head.Next = el;
+				el.Previous = _head;
             }
-            this.head = _el;
-            this.count++;
+            _head = el;
+			_сount++;
         }
-        public bool push_insert(string index, element _el)
+
+        public bool PushInsert(string index, Element el)
         {
-            int result_index;
-            bool is_convert = int.TryParse(index, out result_index);
-            if (is_convert && ((result_index >= 0) && (result_index <= this.count)))
+            int resultIndex;
+            bool isConvert = int.TryParse(index, out resultIndex);
+            if (isConvert && ((resultIndex >= 0) && (resultIndex <= _сount)))
             {
-                int local_counter = 0;
-                element elem_Pointer = tail;
-                while (local_counter < result_index)
+                int counter = 0;
+                Element Pointer = _tail;
+                while (counter < resultIndex)
                 {
-                    if (local_counter == result_index-1)
+                    if (counter == resultIndex - 1)
                     {
-                        if (elem_Pointer.Previous == null)
-                            push_tail(_el);
+                        if (Pointer.Previous == null)
+							PushTail(el);
                         else
-                            if (elem_Pointer.Next == null)
-                                push_head(_el);
+                            if (Pointer.Next == null)
+								PushHead(el);
                             else
                             {
-                                _el.Previous = elem_Pointer.Previous;
-                                _el.Next = elem_Pointer;
-                                elem_Pointer.Previous = _el;
-                                this.count++;
+								el.Previous = Pointer.Previous;
+								el.Next = Pointer;
+								Pointer.Previous = el;
+							_сount++;
                             }
                     }
-                    elem_Pointer = elem_Pointer.Next;
-                    //Console.WriteLine(elem_Pointer.Data);
-                    local_counter++;
+					Pointer = Pointer.Next;
+					counter++;
                 }
                 return true;
             }
             else
                 return false;
         }
+
         public void printList()
         {
-            element pointer = this.tail;
+            Element pointer = _tail;
             int counter = 0;
             while (pointer != null)
             {
@@ -87,20 +85,21 @@ namespace ACme.Collections
                 pointer = pointer.Next;
             }
         }
-        public element find_element(string index)
+
+        public Element findElement(string index)
         {
-            element pointer = this.tail;
-            element result_element = null;
+            Element pointer = _tail;
+            Element findElement = null;
             int counter = 0;
-            int result_index;
-            bool is_convert = int.TryParse(index, out result_index);
-            if (is_convert && ((result_index >= 0) && (result_index < this.count)))
+            int resIndex;
+            bool isConvert = int.TryParse(index, out resIndex);
+            if (isConvert && ((resIndex >= 0) && (resIndex < _сount)))
             {
-                while (counter <= result_index)
+                while (counter <= resIndex)
                 {
-                    if (counter == result_index)
+                    if (counter == resIndex)
                     {
-                        result_element = pointer;
+						findElement = pointer;
                     }
                     counter++;
                     pointer = pointer.Next;
@@ -109,29 +108,31 @@ namespace ACme.Collections
 
             }
             else
-                result_element = null;
-            return result_element;
+				findElement = null;
+            return findElement;
         }
-        public int find_element(element _el)
+
+        public int findElement(Element el)
         {
-            element pointer = this.tail;
+            Element pointer = _tail;
             int counter = 0;
-            int returned_index = -1;
+            int returnIndex = -1;
             while (pointer != null)
             {
-                if (pointer.Data == _el.Data)
-                    returned_index = counter;
+                if (pointer.Data == el.Data)
+					returnIndex = counter;
                 counter++;
                 pointer = pointer.Next;
             }
-            return returned_index;
+            return returnIndex;
         }
-        public int selectIndexelement(string select_request)
+
+        public int selectIndexElement(string selectRequest)
         {
-            int returned_index = -1;
+            int returnedIndex = -1;
             int counter = 0;
-            element pointer = this.tail;
-            string[] requestPart = select_request.Split(' ');
+            Element pointer = _tail;
+            string[] requestPart = selectRequest.Split(' ');
             int comparator = 0;
             int.TryParse(requestPart[1], out comparator);
             switch (requestPart[0])
@@ -144,7 +145,7 @@ namespace ACme.Collections
 
                         if (pointer.Data < comparator)
                         {
-                            returned_index = counter;
+								returnedIndex = counter;
                             flag = true;
                         }
                         counter++;
@@ -160,7 +161,7 @@ namespace ACme.Collections
 
                         if (pointer.Data > comparator)
                         {
-                            returned_index = counter;
+								returnedIndex = counter;
                             flag = true;
                         }
                         counter++;
@@ -176,7 +177,7 @@ namespace ACme.Collections
 
                         if (pointer.Data <= comparator)
                         {
-                            returned_index = counter;
+								returnedIndex = counter;
                             flag = true;
                         }
                         counter++;
@@ -192,7 +193,7 @@ namespace ACme.Collections
 
                         if (pointer.Data < comparator)
                         {
-                            returned_index = counter;
+								returnedIndex = counter;
                             flag = true;
                         }
                         counter++;
@@ -208,7 +209,7 @@ namespace ACme.Collections
 
                         if (pointer.Data == comparator)
                         {
-                            returned_index = counter;
+								returnedIndex = counter;
                             flag = true;
                         }
                         counter++;
@@ -217,24 +218,25 @@ namespace ACme.Collections
                     break;
                 }
             }
-            return returned_index;
+            return returnedIndex;
         }
+
         public bool remove(string index)
         {
-            bool is_remove = false;
-            if (this.count >= 1)
+            bool isRemove = false;
+            if (_сount >= 1)
             {
                 int counter = 0;
                 
-                element pointer = this.tail;
-                int result_index = -1;
-                bool is_convert = int.TryParse(index, out result_index);
-                if (is_convert && ((result_index >= 0) && (result_index < this.count)))
+                Element pointer = _tail;
+                int resultIndex = -1;
+                bool isConvert = int.TryParse(index, out resultIndex);
+                if (isConvert && ((resultIndex >= 0) && (resultIndex < _сount)))
                 {
                     bool flag = false;
                     while (!flag)
                     {
-                        if (counter == result_index)
+                        if (counter == resultIndex)
                         {
                             if ((pointer.Next != null) && (pointer.Previous != null))
                             {
@@ -243,69 +245,53 @@ namespace ACme.Collections
                             }
                             if (pointer.Next == null)
                             {
-                                head = pointer.Previous;
-                                head.Next = null;
+								_head = pointer.Previous;
+								_head = null;
                             }
                             if (pointer.Previous == null)
                             {
-                                tail = pointer.Next;
-                                tail.Previous = null;
+								_tail = pointer.Next;
+								_tail.Previous = null;
                             }
-                            this.count--;
+							_сount--;
                             flag = true;
-                            is_remove = true;
+							isRemove = true;
                         }
                         counter++;
                         pointer = pointer.Next;
                     }
                 }
                 else
-                    is_remove = false;
+					isRemove = false;
             }
             else
-                is_remove = false;
+				isRemove = false;
 
-            return is_remove;
+            return isRemove;
         }
-        public bool remove_value(element _el)
+
+        public bool removeValue(Element el)
         {
-            return remove(this.find_element(_el).ToString());
+            return remove(this.findElement(el).ToString());
         }
-        public bool remove_select(string select_request){
-            return remove(this.selectIndexelement(select_request).ToString());
+
+        public bool removeSelect(string selectRequest){
+            return remove(this.selectIndexElement(selectRequest).ToString());
         }
     }
-    public class element
+
+    public class Element
     {
-        private int data;
-        private element next;
-        private element previous;
-        public int Data
+        int _data;
+        Element _next;
+        Element _previous;
+
+        public int Data { get; set;}
+        public Element Previous { get; set; }
+        public Element Next{ get;set; }
+        public Element(int data) 
         {
-            get
-            {
-                return data;
-            }
-            set
-            {
-                data = value;
-            }
-        }
-        public element Previous
-        {
-            get {return previous; }
-            set { previous = value; }
-        }
-        public element Next
-        {
-            get { return next; }
-            set { next = value; }
-        }
-        public element(int data) 
-        {
-            this.data = data;
-            this.Next = null;
-            this.Previous = null;
+            this._data = data;
         }
     }
     

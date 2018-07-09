@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using Smarteck.Structure;
 
 /*
 namespace Acme.Collections
@@ -36,27 +37,28 @@ namespace Acme.Collections
 }*/
 namespace example
 {
-    using ACme.Collections;
-    class Program
+	
+
+	class Program
     {
         static void Main(string[] args)
         {
-            BidirectionalList list = new BidirectionalList();
-            element [] elem = new element[12];
+			Bidirectionallist list = new Bidirectionallist();
+            Element [] elem = new Element[12];
             for (int i = 0; i < 12; i++)
             {
-                elem[i] = new element(i);
+                elem[i] = new Element(i);
                 if (i < 6)
-                    list.push_head(elem[i]);
+                    list.PushHead(elem[i]);
                 else
-                    list.push_tail(elem[i]);
+                    list.PushTail(elem[i]);
             }
-            element ins_el = new element(101);
-            list.push_insert("12", ins_el);
+            Element ins_el = new Element(101);
+            list.PushInsert("12", ins_el);
             list.printList();
             list.remove("12");
             list.printList();
-            Console.WriteLine(list.selectIndexelement("> 100"));
+            Console.WriteLine(list.selectIndexElement("> 100"));
                 
         }
     }
