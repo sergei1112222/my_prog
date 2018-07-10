@@ -5,9 +5,8 @@ namespace Smarteck.Structure
     
     public class Bidirectionallist
     {
-        public class Element
+        private class Element
         {
-            int _data;
             Element _next;
             Element _previous;
 
@@ -16,22 +15,16 @@ namespace Smarteck.Structure
             public Element Next { get; set; }
             public Element(int data)
             {
-                this._data = data;
+                this.Data = data;
             }
         }
         Element _head;
         Element _tail;
         int _сount;
 
-        public Bidirectionallist()
+        public void PushTail(int data)
         {
-            _head = null;
-            _tail = null;
-			_сount = 0;
-        }
-
-        public void PushTail(Element el)
-        {
+            Element el = new Element(data);
             if (_head == null) { _head = el; }
             else
             {
@@ -42,8 +35,9 @@ namespace Smarteck.Structure
 			_сount++;
         }
 
-        public void PushHead(Element el)
+        public void PushHead(int data)
         {
+            Element el = new Element(data);
             if (_tail == null) { _tail = el; }
             else
             {
@@ -54,10 +48,12 @@ namespace Smarteck.Structure
 			_сount++;
         }
 
-        public bool PushInsert(string index, Element el)
+        public bool PushInsert(int index, int data)
         {
+            Element el = new Element(data);
             int resultIndex;
-            bool isConvert = int.TryParse(index, out resultIndex);
+            string strIndex = index.ToString();
+            bool isConvert = int.TryParse(strIndex, out resultIndex);
             if (isConvert && ((resultIndex >= 0) && (resultIndex <= _сount)))
             {
                 int counter = 0;
@@ -67,10 +63,10 @@ namespace Smarteck.Structure
                     if (counter == resultIndex - 1)
                     {
                         if (Pointer.Previous == null)
-							PushTail(el);
+							PushTail(el.Data);
                         else
                             if (Pointer.Next == null)
-								PushHead(el);
+								PushHead(el.Data);
                             else
                             {
 								el.Previous = Pointer.Previous;
@@ -88,7 +84,7 @@ namespace Smarteck.Structure
                 return false;
         }
 
-        public void printList()
+        public void PrintList()
         {
             Element pointer = _tail;
             int counter = 0;
@@ -100,7 +96,7 @@ namespace Smarteck.Structure
             }
         }
 
-        public Element findElement(string index)
+        public int FindElement(string index)
         {
             Element pointer = _tail;
             Element findElement = null;
@@ -123,17 +119,17 @@ namespace Smarteck.Structure
             }
             else
 				findElement = null;
-            return findElement;
+            return findElement.Data;
         }
 
-        public int findElement(Element el)
+        public int FindElement(int Data)
         {
             Element pointer = _tail;
             int counter = 0;
             int returnIndex = -1;
             while (pointer != null)
             {
-                if (pointer.Data == el.Data)
+                if (pointer.Data == Data)
 					returnIndex = counter;
                 counter++;
                 pointer = pointer.Next;
@@ -141,7 +137,7 @@ namespace Smarteck.Structure
             return returnIndex;
         }
 
-        public int selectIndexElement(string selectRequest)
+        public int SelectIndexElement(string selectRequest)
         {
             int returnedIndex = -1;
             int counter = 0;
@@ -235,8 +231,9 @@ namespace Smarteck.Structure
             return returnedIndex;
         }
 
-        public bool remove(string index)
+        public bool Remove(int index)
         {
+            string strIndex = index.ToString();
             bool isRemove = false;
             if (_сount >= 1)
             {
@@ -244,7 +241,7 @@ namespace Smarteck.Structure
                 
                 Element pointer = _tail;
                 int resultIndex = -1;
-                bool isConvert = int.TryParse(index, out resultIndex);
+                bool isConvert = int.TryParse(strIndex, out resultIndex);
                 if (isConvert && ((resultIndex >= 0) && (resultIndex < _сount)))
                 {
                     bool flag = false;
@@ -284,13 +281,14 @@ namespace Smarteck.Structure
             return isRemove;
         }
 
-        public bool removeValue(Element el)
+        public bool removeValue(int Data)
         {
-            return remove(this.findElement(el).ToString());
+            
+            return Remove(this.FindElement(Data));
         }
 
         public bool removeSelect(string selectRequest){
-            return remove(this.selectIndexElement(selectRequest).ToString());
+            return Remove(this.SelectIndexElement(selectRequest));
         }
     }
 

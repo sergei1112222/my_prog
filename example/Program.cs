@@ -44,21 +44,21 @@ namespace example
         static void Main(string[] args)
         {
 			Bidirectionallist list = new Bidirectionallist();
-            Element [] elem = new Element[12];
+            //Bidirectionallist.Element[] elem = new Bidirectionallist.Element[12];
             for (int i = 0; i < 12; i++)
             {
-                elem[i] = new Element(i);
+                //elem[i] = new Bidirectionallist.Element(i);
                 if (i < 6)
-                    list.PushHead(elem[i]);
+                    list.PushHead(i);
                 else
-                    list.PushTail(elem[i]);
+                    list.PushTail(i);
             }
-            Element ins_el = new Element(101);
-            list.PushInsert("12", ins_el);
-            list.printList();
-            list.remove("12");
-            list.printList();
-            Console.WriteLine(list.selectIndexElement("> 100"));
+            //Bidirectionallist.Element ins_el = new Bidirectionallist.Element(101);
+            list.PushInsert(12, 101);
+            list.PrintList();
+            list.Remove(12);
+            list.PrintList();
+            Console.WriteLine(list.SelectIndexElement("> 100"));
                 
         }
     }
