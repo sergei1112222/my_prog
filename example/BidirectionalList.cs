@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Smarteck.Structure
 {
     
-    public class Bidirectionallist
+    public class Bidirectionallist:IEnumerable
     {
-        private class Element
+        public class Element
         {
 
             public int Data { get; set; }
@@ -15,6 +17,23 @@ namespace Smarteck.Structure
             {
                 this.Data = data;
             }
+        }
+        private class Person
+        {
+            public string Name { get; set; }
+            public string Surname { get; set; }
+            public char Gender { get; set; }
+            public int Age { get; set; }
+            public string PhoneNumber { get; set; }
+            public Person(string name, string surname, char gender, int age, string phonenumber)
+            {
+                Name = name;
+                Surname = surname;
+                Gender = gender;
+                Age = age;
+                PhoneNumber = phonenumber; 
+            }
+
         }
         Element _head;
         Element _tail;
@@ -288,6 +307,21 @@ namespace Smarteck.Structure
 
         public bool RemoveSelect(string selectRequest){
             return Remove(this.SelectIndexElement(selectRequest));
+        }
+        /*IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable<int>)this).GetEnumerator();
+        }*/
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            Element pointer = _tail;
+            int counter = 0; 
+            while (pointer != null)
+            {
+                yield return pointer.Data;
+                counter++;
+                pointer = pointer.Next;
+            }
         }
     }
 

@@ -74,6 +74,10 @@ namespace example
             else
                 Console.WriteLine("Remove unsuccessfully");
             list.PrintList();
+            Console.WriteLine("Foreach");
+            foreach (var elem in list){
+                Console.WriteLine(elem.ToString());
+            }
             Console.WriteLine(list.SelectIndexElement("> 100"));
                 
         }
