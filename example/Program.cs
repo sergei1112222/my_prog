@@ -4,37 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
-using Smarteck.Structure;
+using Structure;
+using BookPerson;
 
-/*
-namespace Acme.Collections
-{
-    public class Stack
-    {
-        Entry top;
-        public void Push(object data)
-        {
-            top = new Entry(top, data);
-        }
-        public object Pop()
-        {
-            if (top == null) throw new InvalidOperationException();
-            object result = top.data;
-            top = top.next;
-            return result;
-        }
-        class Entry
-        {
-            public Entry next;
-            public object data;
-            public Entry(Entry next, object data)
-            {
-                this.next = next;
-                this.data = data;
-            }
-        }
-    }
-}*/
+
 namespace example
 {
 	
@@ -43,7 +16,7 @@ namespace example
     {
         static void Main(string[] args)
         {
-			Bidirectionallist list = new Bidirectionallist();
+            //Bidirectionallist<int> list = new Bidirectionallist<int>();
             //Bidirectionallist.Element[] elem = new Bidirectionallist.Element[12];
             //for (int i = 0; i < 12; i++)
             //{
@@ -54,7 +27,7 @@ namespace example
             //   list.PushTail(i);
             //}
             //Bidirectionallist.Element ins_el = new Bidirectionallist.Element(101);
-            list.PushTail(1);
+            /*list.PushTail(1);
             list.PushTail(2);
             list.PushTail(3);
             list.PushTail(4);
@@ -74,11 +47,24 @@ namespace example
             else
                 Console.WriteLine("Remove unsuccessfully");
             list.PrintList();
-            Console.WriteLine("Foreach");
-            foreach (var elem in list){
-                Console.WriteLine(elem.ToString());
+            Console.WriteLine("Foreach");*/
+            
+            BookPersonManager bookManager = new BookPersonManager();
+            bookManager.AddPerson("John", "Smith", 'm', 23, "12345678");
+            bookManager.AddPerson("Trevor", "Clark", 'm', 22, "41234132");
+            bookManager.AddPerson("Mike", "Whillams", 'm', 43, "12315");
+            Bidirectionallist<Person> list = bookManager.GetPersonList();
+            list.PrintList();
+            list.PushHead(new Person("Clara", "James", 'f', 32, "03"));
+            foreach (var elem in list)
+            {
+                Console.WriteLine(elem.);
             }
-            Console.WriteLine(list.SelectIndexElement("> 100"));
+            list.PrintList();
+            Console.WriteLine("Press any key to exit ... ");
+            Console.ReadKey();
+            
+            //Console.WriteLine(list.SelectIndexElement("> 100"));
                 
         }
     }
