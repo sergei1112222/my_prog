@@ -7,8 +7,6 @@ namespace Smarteck.Structure
     {
         private class Element
         {
-            Element _next;
-            Element _previous;
 
             public int Data { get; set; }
             public Element Previous { get; set; }
@@ -22,7 +20,7 @@ namespace Smarteck.Structure
         Element _tail;
         int _сount;
 
-        public void PushTail(int data)
+        public void PushHead(int data)
         {
             Element el = new Element(data);
             if (_head == null) { _head = el; }
@@ -35,7 +33,7 @@ namespace Smarteck.Structure
 			_сount++;
         }
 
-        public void PushHead(int data)
+        public void PushTail(int data)
         {
             Element el = new Element(data);
             if (_tail == null) { _tail = el; }
@@ -96,13 +94,14 @@ namespace Smarteck.Structure
             }
         }
 
-        public int FindElement(string index)
+        public int FindElementInd(int index)
         {
             Element pointer = _tail;
             Element findElement = null;
             int counter = 0;
             int resIndex;
-            bool isConvert = int.TryParse(index, out resIndex);
+            string strIndex = index.ToString();
+            bool isConvert = int.TryParse(strIndex, out resIndex);
             if (isConvert && ((resIndex >= 0) && (resIndex < _сount)))
             {
                 while (counter <= resIndex)
@@ -281,13 +280,13 @@ namespace Smarteck.Structure
             return isRemove;
         }
 
-        public bool removeValue(int Data)
+        public bool RemoveValue(int Data)
         {
             
             return Remove(this.FindElement(Data));
         }
 
-        public bool removeSelect(string selectRequest){
+        public bool RemoveSelect(string selectRequest){
             return Remove(this.SelectIndexElement(selectRequest));
         }
     }
