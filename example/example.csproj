@@ -42,8 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BidirectionalList.cs" />
+    <Compile Include="BookPersonManager.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="program_for_study.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
