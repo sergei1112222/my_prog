@@ -101,7 +101,7 @@ namespace Structure
                 return false;
         }
 
-        public void PrintList()
+        /*blic void PrintList()
         {
             Element<T> pointer = _tail;
             int counter = 0;
@@ -111,7 +111,7 @@ namespace Structure
                 counter++;
                 pointer = pointer.Next;
             }
-        }
+        }*/
 
         public T FindElementInd(int index)
         {
