@@ -17,8 +17,7 @@ namespace BookPerson
             foreach (var _element in this._bookPerson)
             {
                 if ((" "+_element.Name + _element.Surname).IndexOf(request) != -1)
-                {
-                    //gettingList.PushHead(new Person(_element.Name, _element.Surname, _element.Gender, _element.Age, _element.Phonenumber));
+                { 
                     gettingList.PushHead(_element);
                 }
             }
@@ -29,11 +28,13 @@ namespace BookPerson
         {
             _bookPerson.PushHead(new Person(name, surname, birthday, gender, age, phonenumber));
         }
+
         public Bidirectionallist<Person> GetPersonList()
         {
             Bidirectionallist<Person> gettingList = new Bidirectionallist<Person>(_bookPerson);
             return gettingList;
         }
+
         public Bidirectionallist<Person> SelectRequest(string request)
         {
             //Bidirectionallist<Person> gettingList = new Bidirectionallist<Person>(BookPerson);
@@ -54,13 +55,11 @@ namespace BookPerson
                         int Age = reader.ReadInt32();
                         string Phonenumber = reader.ReadString();
                         this.AddPerson(Name, Surname, Birthday, Gender, Age, Phonenumber);
-                       // Console.WriteLine("Reading success");
                     }
                 }
             }
             catch
             {
-               // Console.WriteLine("Reading unsuccess");
             }
         }
         public void SaveNotebook()

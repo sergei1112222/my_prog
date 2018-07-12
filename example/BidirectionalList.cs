@@ -5,9 +5,7 @@ using System.Collections.Generic;
 namespace Structure
 {
     public class Bidirectionallist<T> : IEnumerable<T>
-    {
-
-
+    { 
         Element<T> _head;
         Element<T> _tail;
         int _сount;
@@ -39,6 +37,7 @@ namespace Structure
             }
         }
         public Bidirectionallist() { }
+
         public void PushHead(T data)
         {
             Element<T> el = new Element<T>(data);
@@ -101,17 +100,7 @@ namespace Structure
                 return false;
         }
 
-        /*blic void PrintList()
-        {
-            Element<T> pointer = _tail;
-            int counter = 0;
-            while (pointer != null)
-            {
-                Console.WriteLine("[" + counter.ToString() + "] = " + pointer.Data);
-                counter++;
-                pointer = pointer.Next;
-            }
-        }*/
+       
 
         public T FindElementInd(int index)
         {
@@ -305,13 +294,6 @@ namespace Structure
             return Remove(this.FindElement(Data));
         }
 
-        /*public bool RemoveSelect(string selectRequest){
-            return Remove(this.SelectIndexElement(selectRequest));
-        }*/
-        /*IEnumerator IEnumerable.GetEnumerator()
-        {
-            return ((IEnumerable<int>)this).GetEnumerator();
-        }*/
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
             Element<T> pointer = _tail;
