@@ -48,11 +48,7 @@ namespace example
                         {
                             foreach (var elem in bookManager.GetPersonList())
                             {
-                                Console.WriteLine(elem.Name + ' ' 
-                                    + elem.Surname + ", " 
-                                    + elem.Birthday + ", " 
-                                    + elem.Age.ToString() + " years old, " 
-                                    + elem.Gender + ", " + elem.Phonenumber);
+                                Console.WriteLine($"{elem.Name} {elem.Surname}, {elem.Birthday}, {elem.Age} years old, {elem.Gender},{elem.Phonenumber}");
                             }
                             break;
                         }
@@ -61,11 +57,7 @@ namespace example
                             Console.WriteLine("Search: ");
                             foreach (var elem in bookManager.SelectRequest(Console.ReadLine()))
                             {
-                                Console.WriteLine(elem.Name + ' '
-                                    + elem.Surname + ", "
-                                    + elem.Birthday + ", "
-                                    + elem.Age.ToString() + " years old, "
-                                    + elem.Gender + ", " + elem.Phonenumber);
+                                Console.WriteLine($"{elem.Name} {elem.Surname}, {elem.Birthday}, {elem.Age} years old, {elem.Gender},{elem.Phonenumber}");
                             }
                             break;
     

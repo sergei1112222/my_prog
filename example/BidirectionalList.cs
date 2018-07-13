@@ -79,28 +79,26 @@ namespace Structure
                     if (counter == resultIndex - 1)
                     {
                         if (Pointer.Previous == null)
-							PushTail(el.Data);
+                            PushTail(el.Data);
                         else
                             if (Pointer.Next == null)
-								PushHead(el.Data);
-                            else
-                            {
-								el.Previous = Pointer.Previous;
-								el.Next = Pointer;
-								Pointer.Previous = el;
-							_сount++;
-                            }
+                            PushHead(el.Data);
+                        else
+                        {
+                            el.Previous = Pointer.Previous;
+                            el.Next = Pointer;
+                            Pointer.Previous = el;
+                            _сount++;
+                        }
                     }
-					Pointer = Pointer.Next;
-					counter++;
+                    Pointer = Pointer.Next;
+                    counter++;
                 }
                 return true;
             }
             else
                 return false;
         }
-
-       
 
         public T FindElementInd(int index)
         {
@@ -143,100 +141,6 @@ namespace Structure
             }
             return returnIndex;
         }
-
-        /*public int SelectIndexElement(string selectRequest)
-        {
-            int returnedIndex = -1;
-            int counter = 0;
-            Element<T> pointer = _tail;
-            string[] requestPart = selectRequest.Split(' ');
-            T comparator;
-            //T.TryParse(requestPart[1], out comparator);
-            switch (requestPart[0])
-            {
-                case "<": 
-                {
-                    bool flag = false;
-                    while ((!flag) && (pointer != null))
-                    {
-
-                        if (pointer.Data < comparator)
-                        {
-								returnedIndex = counter;
-                            flag = true;
-                        }
-                        counter++;
-                        pointer = pointer.Next;
-                    }
-                    break;
-                }
-                case ">":
-                {
-                    bool flag = false;
-                    while ((!flag) && (pointer != null))
-                    {
-
-                        if (pointer.Data > comparator)
-                        {
-								returnedIndex = counter;
-                            flag = true;
-                        }
-                        counter++;
-                        pointer = pointer.Next;
-                    }
-                    break;
-                }
-                case "<=":
-                {
-                    bool flag = false;
-                    while ((!flag) && (pointer != null))
-                    {
-
-                        if (pointer.Data <= comparator)
-                        {
-								returnedIndex = counter;
-                            flag = true;
-                        }
-                        counter++;
-                        pointer = pointer.Next;
-                    }
-                    break;
-                }
-                case ">=":
-                {
-                    bool flag = false;
-                    while ((!flag) && (pointer != null))
-                    {
-
-                        if (pointer.Data < comparator)
-                        {
-								returnedIndex = counter;
-                            flag = true;
-                        }
-                        counter++;
-                        pointer = pointer.Next;
-                    }
-                    break;
-                }
-                case "=":
-                {
-                    bool flag = false;
-                    while ((!flag) && (pointer != null))
-                    {
-
-                        if (pointer.Data == comparator)
-                        {
-								returnedIndex = counter;
-                            flag = true;
-                        }
-                        counter++;
-                        pointer = pointer.Next;
-                    }
-                    break;
-                }
-            }
-            return returnedIndex;
-        }*/
 
         public bool Remove(int index)
         {
@@ -294,19 +198,7 @@ namespace Structure
             return Remove(this.FindElement(Data));
         }
 
-        IEnumerator<T> IEnumerable<T>.GetEnumerator()
-        {
-            Element<T> pointer = _tail;
-            int counter = 0; 
-            while (pointer != null)
-            {
-                yield return pointer.Data;
-                counter++;
-                pointer = pointer.Next;
-            }
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
+        private IEnumerator<T> ReturnNumerable()
         {
             Element<T> pointer = _tail;
             int counter = 0;
@@ -316,6 +208,16 @@ namespace Structure
                 counter++;
                 pointer = pointer.Next;
             }
+        }
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
+            return ReturnNumerable();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ReturnNumerable();
         }
     }
 
