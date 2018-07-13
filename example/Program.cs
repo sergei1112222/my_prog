@@ -14,6 +14,15 @@ namespace example
     {
         static void Main(string[] args)
         {
+            void IsEmpty(out string str, string field)
+            {
+                do
+                {
+                    Console.WriteLine(field);
+                    str = Console.ReadLine();
+                } while (str.Length == 0);
+            }
+
             BookPersonManager bookManager = new BookPersonManager();
             bool flag = false;
             while (!flag)
@@ -28,20 +37,28 @@ namespace example
                 {
                     case 1:
                         {
-                            Console.WriteLine("Name: ");
-                            string Name = Console.ReadLine();
-                            Console.WriteLine("Surname: ");
-                            string Surname = Console.ReadLine();
-                            Console.WriteLine("Date: ");
-                            string Date = Console.ReadLine();
-                            Console.WriteLine("Gender: ");
-                            char Gender = Console.ReadLine()[0];
-                            Console.WriteLine("Age: ");
-                            int age;
-                            int.TryParse(Console.ReadLine(), out age);
+                            DateTime Date;
+                            char Gender;
+                            string Name, Surname;
+                            IsEmpty(out Name, "Name: ");
+                            IsEmpty(out Surname, "Surname: ");
+
+                            do
+                            {
+                                Console.WriteLine("Date: ");
+                                Date = Convert.ToDateTime(Console.ReadLine());
+                            } while (Date > DateTime.Now);
+
+                            do
+                            {
+                                Console.WriteLine("Gender: ");
+                                Gender = Console.ReadLine()[0];
+                            } while ((Gender != 'f') && (Gender !='m'));
                             Console.WriteLine("Phonenumber: ");
                             string PhoneNumber = Console.ReadLine();
-                            bookManager.AddPerson(Name, Surname, Date, Gender, age, PhoneNumber);
+                            Person _person = new Person(Name, Surname, Date, Gender, PhoneNumber);
+                            bookManager.AddPerson(_person);
+                            
                             break;
                         }
                     case 2:
@@ -72,5 +89,6 @@ namespace example
             }
             bookManager.SaveNotebook();
         }
+        
     }
 }
