@@ -6,20 +6,21 @@ namespace Structure
 {
     public class Bidirectionallist<T> : IEnumerable<T>
     { 
-        Element<T> _head;
-        Element<T> _tail;
+        Element _head;
+        Element _tail;
         int _сount;
-        public class Element<T>
+        public class Element
         {
 
             public T Data { get; set; }
-            public Element<T> Previous { get; set; }
-            public Element<T> Next { get; set; }
+            public Element Previous { get; set; }
+            public Element Next { get; set; }
+
             public Element(T data)
             {
                 this.Data = data;
             }
-            public Element(Element<T> elem)
+            public Element(Element elem)
             {
                 Data = elem.Data;
                 Previous = elem.Previous;
@@ -29,7 +30,7 @@ namespace Structure
 
         public Bidirectionallist (Bidirectionallist<T> list)
         {
-            Element<T> pointer = list._tail;
+            Element pointer = list._tail;
             while (pointer != null)
             {
                 this.PushHead(pointer.Data);
@@ -40,7 +41,7 @@ namespace Structure
 
         public void PushHead(T data)
         {
-            Element<T> el = new Element<T>(data);
+            Element el = new Element(data);
             if (_head == null) { _head = el; }
             else
             {
@@ -53,7 +54,7 @@ namespace Structure
 
         public void PushTail(T data)
         {
-            Element<T> el = new Element<T>(data);
+            Element el = new Element(data);
             if (_tail == null) { _tail = el; }
             else
             {
@@ -66,14 +67,14 @@ namespace Structure
 
         public bool PushInsert(int index, T data)
         {
-            Element<T> el = new Element<T>(data);
+            Element el = new Element(data);
             int resultIndex;
             string strIndex = index.ToString();
             bool isConvert = int.TryParse(strIndex, out resultIndex);
             if (isConvert && ((resultIndex >= 0) && (resultIndex <= _сount)))
             {
                 int counter = 0;
-                Element<T> Pointer = _tail;
+                Element Pointer = _tail;
                 while (counter < resultIndex)
                 {
                     if (counter == resultIndex - 1)
@@ -102,8 +103,8 @@ namespace Structure
 
         public T FindElementInd(int index)
         {
-            Element<T> pointer = _tail;
-            Element<T> findElement = null;
+            Element pointer = _tail;
+            Element findElement = null;
             int counter = 0;
             int resIndex;
             string strIndex = index.ToString();
@@ -129,7 +130,7 @@ namespace Structure
 
         public int FindElement(T Data)
         {
-            Element<T> pointer = _tail;
+            Element pointer = _tail;
             int counter = 0;
             int returnIndex = -1;
             while (pointer != null)
@@ -150,7 +151,7 @@ namespace Structure
             {
                 int counter = 0;
                 
-                Element<T> pointer = _tail;
+                Element pointer = _tail;
                 int resultIndex = -1;
                 bool isConvert = int.TryParse(strIndex, out resultIndex);
                 if (isConvert && ((resultIndex >= 0) && (resultIndex < _сount)))
@@ -200,7 +201,7 @@ namespace Structure
 
         private IEnumerator<T> ReturnNumerable()
         {
-            Element<T> pointer = _tail;
+            Element pointer = _tail;
             int counter = 0;
             while (pointer != null)
             {
