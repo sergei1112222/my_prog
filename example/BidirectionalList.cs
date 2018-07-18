@@ -5,13 +5,9 @@ using System.Collections.Generic;
 namespace Structure
 {
     public class Bidirectionallist<T> : IEnumerable<T>
-    { 
-        Element _head;
-        Element _tail;
-        int _сount;
+    {
         public class Element
         {
-
             public T Data { get; set; }
             public Element Previous { get; set; }
             public Element Next { get; set; }
@@ -27,39 +23,46 @@ namespace Structure
                 Next = elem.Next;
             }
         }
+        Element _head;
+        Element _tail;
+        int _сount;
 
+        public Bidirectionallist() { }
         public Bidirectionallist (Bidirectionallist<T> list)
         {
-            Element pointer = list._tail;
+            Element pointer = list._head;
             while (pointer != null)
             {
-                this.PushHead(pointer.Data);
+                this.PushTail(pointer.Data);
                 pointer = pointer.Next;
             }
         }
-        public Bidirectionallist() { }
 
-        public void PushHead(T data)
+        public int Count
+        {
+            get { return this._сount; }
+        }
+        public void PushTail(T data)
         {
             Element el = new Element(data);
             if (_head == null) { _head = el; }
             else
             {
-                _tail.Previous = el;
-				el.Next = _tail;
+                _tail.Next = el;
+				el.Previous = _tail;
             }
             _tail = el;
 			_сount++;
         }
 
-        public void PushTail(T data)
+        public void PushHead(T data)
         {
             Element el = new Element(data);
             if (_tail == null) { _tail = el; }
             else
             {
-                _head.Next = el;
-				el.Previous = _head;
+                _head.Previous = el;
+				el.Next = _head;
             }
             _head = el;
 			_сount++;
@@ -74,7 +77,7 @@ namespace Structure
             if (isConvert && ((resultIndex >= 0) && (resultIndex <= _сount)))
             {
                 int counter = 0;
-                Element Pointer = _tail;
+                Element Pointer = _head;
                 while (counter < resultIndex)
                 {
                     if (counter == resultIndex - 1)
@@ -103,7 +106,7 @@ namespace Structure
 
         public T FindElementInd(int index)
         {
-            Element pointer = _tail;
+            Element pointer = _head;
             Element findElement = null;
             int counter = 0;
             int resIndex;
@@ -130,7 +133,7 @@ namespace Structure
 
         public int FindElement(T Data)
         {
-            Element pointer = _tail;
+            Element pointer = _head;
             int counter = 0;
             int returnIndex = -1;
             while (pointer != null)
@@ -140,6 +143,7 @@ namespace Structure
                 counter++;
                 pointer = pointer.Next;
             }
+
             return returnIndex;
         }
 
@@ -151,7 +155,7 @@ namespace Structure
             {
                 int counter = 0;
                 
-                Element pointer = _tail;
+                Element pointer = _head;
                 int resultIndex = -1;
                 bool isConvert = int.TryParse(strIndex, out resultIndex);
                 if (isConvert && ((resultIndex >= 0) && (resultIndex < _сount)))
@@ -161,20 +165,31 @@ namespace Structure
                     {
                         if (counter == resultIndex)
                         {
-                            if ((pointer.Next != null) && (pointer.Previous != null))
+                            if ((pointer.Next == null) && (pointer.Previous == null))
                             {
-                                pointer.Next.Previous = pointer.Previous;
-                                pointer.Previous.Next = pointer.Next;
+                                _head = null;
+                                _tail = null;
                             }
-                            if (pointer.Next == null)
+                            else
                             {
-								_head = pointer.Previous;
-								_head = null;
-                            }
-                            if (pointer.Previous == null)
-                            {
-								_tail = pointer.Next;
-								_tail.Previous = null;
+                                if ((pointer.Next != null) && (pointer.Previous != null))
+                                {
+                                    pointer.Next.Previous = pointer.Previous;
+                                    pointer.Previous.Next = pointer.Next;
+                                }
+                                else
+                                {
+                                    if (pointer.Next == null)
+                                    {
+                                        _tail = pointer.Previous;
+                                        _tail.Next = null;
+                                    }
+                                    if (pointer.Previous == null)
+                                    {
+                                        _head = pointer.Next;
+                                        _head.Previous = null;
+                                    }
+                                }
                             }
 							_сount--;
                             flag = true;
@@ -192,16 +207,13 @@ namespace Structure
 
             return isRemove;
         }
-
         public bool RemoveValue(T Data)
         {
-            
             return Remove(this.FindElement(Data));
         }
-
         private IEnumerator<T> ReturnNumerable()
         {
-            Element pointer = _tail;
+            Element pointer = _head;
             int counter = 0;
             while (pointer != null)
             {

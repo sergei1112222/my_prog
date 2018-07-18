@@ -7,15 +7,54 @@ using System.Numerics;
 
 namespace BookPerson
 {
+    public class Person
+    {
+        public string Name { set; get; }
+        public string Surname { set; get; }
+        public DateTime Birthday { set; get; }
+        public char Gender { set; get; }
+        public int Age { get { return GetAge(); } }
+        public string Phonenumber { set; get; }
+        public Person(string name, string surname, DateTime birthday, char gender, string phonenumber)
+        {
+            Name = name;
+            Surname = surname;
+            Birthday = birthday;
+            Gender = gender;
+            //Age = GetAge();
+            Phonenumber = phonenumber;
+        }
+        private int GetAge()
+        {
+            DateTime nowDate = DateTime.Today;
+            int age = nowDate.Year - Birthday.Year;
+            if (Birthday > nowDate.AddYears(-age))
+                age--;
+            return age;
+
+            //return now.Year - this.Birthday.Year - 1 +
+            //  ((now.Month > this.Birthday.Month || now.Month == this.Birthday.Month && now.Day >= this.Birthday.Day) ? 1 : 0);
+        }
+
+
+    }
     public class BookPersonManager
     {        
         private const string PATH = "DB.dat";
         private Bidirectionallist<Person> _bookPerson = new Bidirectionallist<Person>();
+
         public BookPersonManager() { }
         public void AddPerson(Person person)
         {
+            _bookPerson.PushTail(person);
+        }
+        public void DeletePerson(int index)
+        {
+            _bookPerson.Remove(index - 1);
+        } 
 
-            _bookPerson.PushHead(person);
+        public int Count {
+            get { return this._bookPerson.Count; }
         }
 
         public Bidirectionallist<Person> GetPersonList()
@@ -35,7 +74,7 @@ namespace BookPerson
         {
             try
             {
-                using (BinaryWriter writer = new BinaryWriter(File.Open(PATH, FileMode.OpenOrCreate)))
+                using (BinaryWriter writer = new BinaryWriter(File.Open(PATH, FileMode.Create)))
                 {
                     foreach (var elem in this._bookPerson)
                     {
@@ -89,35 +128,5 @@ namespace BookPerson
             return gettingList;
         }
     }
-    public class Person
-    {
-        public string Name { set; get; }
-        public string Surname { set; get; }
-        public DateTime Birthday { set; get; }
-        public char Gender { set; get; }
-        public int Age { get { return GetAge(); } }
-        public string Phonenumber { set; get; }
-        public Person(string name, string surname, DateTime birthday, char gender, string phonenumber)
-        {
-            Name = name;
-            Surname = surname;
-            Birthday = birthday;
-            Gender = gender;
-            //Age = GetAge();
-            Phonenumber = phonenumber;
-        }
-        private int GetAge()
-        {
-            DateTime nowDate = DateTime.Today;
-            int age = nowDate.Year - Birthday.Year;
-            if (Birthday > nowDate.AddYears(-age))
-                age--;
-            return age;
-
-            //return now.Year - this.Birthday.Year - 1 +
-            //  ((now.Month > this.Birthday.Month || now.Month == this.Birthday.Month && now.Day >= this.Birthday.Day) ? 1 : 0);
-        }
-
-
-    }
+    
 }
