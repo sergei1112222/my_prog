@@ -165,32 +165,7 @@ namespace Structure
                     {
                         if (counter == resultIndex)
                         {
-                            if ((pointer.Next == null) && (pointer.Previous == null))
-                            {
-                                _head = null;
-                                _tail = null;
-                            }
-                            else
-                            {
-                                if ((pointer.Next != null) && (pointer.Previous != null))
-                                {
-                                    pointer.Next.Previous = pointer.Previous;
-                                    pointer.Previous.Next = pointer.Next;
-                                }
-                                else
-                                {
-                                    if (pointer.Next == null)
-                                    {
-                                        _tail = pointer.Previous;
-                                        _tail.Next = null;
-                                    }
-                                    if (pointer.Previous == null)
-                                    {
-                                        _head = pointer.Next;
-                                        _head.Previous = null;
-                                    }
-                                }
-                            }
+                            RemoveOperation(pointer);
 							_сount--;
                             flag = true;
 							isRemove = true;
@@ -207,10 +182,23 @@ namespace Structure
 
             return isRemove;
         }
+
         public bool RemoveValue(T Data)
         {
-            return Remove(this.FindElement(Data));
+            bool isRemove = false;
+            Element pointer = _head;
+            while ((pointer != null) && (!isRemove))
+            {
+                if (pointer.Data.Equals(Data))
+                {
+                    RemoveOperation(pointer);
+                    isRemove = true;
+                }
+                pointer = pointer.Next;
+            }
+            return isRemove;
         }
+
         private IEnumerator<T> ReturnNumerable()
         {
             Element pointer = _head;
@@ -220,6 +208,36 @@ namespace Structure
                 yield return pointer.Data;
                 counter++;
                 pointer = pointer.Next;
+            }
+        }
+
+        private void RemoveOperation(Element pointer)
+        {
+            if ((pointer.Next == null) && (pointer.Previous == null))
+            {
+                _head = null;
+                _tail = null;
+            }
+            else
+            {
+                if ((pointer.Next != null) && (pointer.Previous != null))
+                {
+                    pointer.Next.Previous = pointer.Previous;
+                    pointer.Previous.Next = pointer.Next;
+                }
+                else
+                {
+                    if (pointer.Next == null)
+                    {
+                        _tail = pointer.Previous;
+                        _tail.Next = null;
+                    }
+                    if (pointer.Previous == null)
+                    {
+                        _head = pointer.Next;
+                        _head.Previous = null;
+                    }
+                }
             }
         }
 

@@ -33,10 +33,9 @@ namespace example
             }
             void PrintList(Bidirectionallist<Person> list)
             {
-                int count = 0;
                 foreach (var elem in list)
                 {
-                    Console.WriteLine($"{++count}. {elem.Name} {elem.Surname}, {elem.Birthday}, {elem.Age} years old, {elem.Gender},{elem.Phonenumber}");
+                    Console.WriteLine($"{elem.ID}. {elem.Name} {elem.Surname}, {elem.Birthday}, {elem.Age} years old, {elem.Gender},{elem.Phonenumber}");
                 }
             }
 
@@ -73,8 +72,8 @@ namespace example
                             } while ((Gender != 'f') && (Gender != 'm'));
                             Console.WriteLine("Phonenumber: ");
                             string PhoneNumber = Console.ReadLine();
-                            Person _person = new Person(Name, Surname, Date, Gender, PhoneNumber);
-                            bookManager.AddPerson(_person);
+                            //Person _person = new Person(Name, Surname, Date, Gender, PhoneNumber);
+                            bookManager.AddPerson(Name, Surname, Date, Gender, PhoneNumber);
                             Console.Clear();
                             Console.WriteLine(" ");
                             PrintList(bookManager.GetPersonList());
@@ -91,30 +90,17 @@ namespace example
                             PrintList(bookManager.SelectRequest(Console.ReadLine()));
                             break;
                         case 4:
-                            int index;
+                            int ID;
                             bool parseFlag = false;
                             Console.WriteLine(" ");
-                            Console.WriteLine("Index: ");
+                            Console.WriteLine("ID: ");
                             do
                             {
-                                parseFlag = int.TryParse(Console.ReadLine(), out index);
+                                parseFlag = int.TryParse(Console.ReadLine(), out ID);
                                 if (!parseFlag)
                                     Console.WriteLine("Incorrect index! Repeat please...");
-                                else
-                                {
-                                    if ((index < 1) || (index > bookManager.Count))
-                                    {
-                                        Console.WriteLine("Index out of bounds! Repeat input...");
-                                    }
-                                    /*else
-                                    {
-                                        bookManager.DeletePerson(index);
-                                    }*/
-                                }
-                                bool var1 = (index < 1) && (index > bookManager.Count);
-                                bool var2 = (!parseFlag) || var1;
-                            } while ((!parseFlag) || ((index < 1) || (index > bookManager.Count)));
-                            bookManager.DeletePerson(index);
+                            } while (!parseFlag);
+                            bookManager.RemovePerson(ID);
                             Console.Clear();
                             PrintList(bookManager.GetPersonList());
                             Console.WriteLine(" ");

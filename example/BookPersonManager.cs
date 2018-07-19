@@ -9,14 +9,16 @@ namespace BookPerson
 {
     public class Person
     {
+        public uint ID { get; }
         public string Name { set; get; }
         public string Surname { set; get; }
         public DateTime Birthday { set; get; }
         public char Gender { set; get; }
         public int Age { get { return GetAge(); } }
         public string Phonenumber { set; get; }
-        public Person(string name, string surname, DateTime birthday, char gender, string phonenumber)
+        public Person(uint id, string name, string surname, DateTime birthday, char gender, string phonenumber)
         {
+            ID = id;
             Name = name;
             Surname = surname;
             Birthday = birthday;
@@ -39,18 +41,36 @@ namespace BookPerson
 
     }
     public class BookPersonManager
-    {        
+    {
+        private uint lastID;
         private const string PATH = "DB.dat";
         private Bidirectionallist<Person> _bookPerson = new Bidirectionallist<Person>();
 
+        public int PersonCount
+        {
+            get { return _bookPerson.Count; }
+        }
         public BookPersonManager() { }
         public void AddPerson(Person person)
         {
             _bookPerson.PushTail(person);
         }
-        public void DeletePerson(int index)
+        public void AddPerson(string name, string surname, DateTime birthday, char gender, string phonenumber)
         {
-            _bookPerson.Remove(index - 1);
+            lastID++;
+            Person person = new Person(lastID, name, surname, birthday, gender, phonenumber);
+            _bookPerson.PushTail(person);
+        }
+
+        public bool RemovePerson(int ID)
+        {
+            bool isRemove = false;
+            foreach (var elem in this._bookPerson)
+                if (elem.ID == ID)
+                {
+                    isRemove = _bookPerson.RemoveValue(elem);
+                }
+            return isRemove;
         } 
 
         public int Count {
@@ -78,6 +98,7 @@ namespace BookPerson
                 {
                     foreach (var elem in this._bookPerson)
                     {
+                        writer.Write(elem.ID);
                         writer.Write(elem.Name);
                         writer.Write(elem.Surname);
                         writer.Write(elem.Birthday.Date.ToString());
@@ -99,15 +120,20 @@ namespace BookPerson
                 {
                     while (reader.PeekChar() > -1)
                     {
+                        uint id = reader.ReadUInt32();
                         string Name = reader.ReadString();
                         string Surname = reader.ReadString();
                         DateTime Birthday = Convert.ToDateTime(reader.ReadString());
                         char Gender = reader.ReadChar();
                         string Phonenumber = reader.ReadString();
-                        Person _person = new Person(Name, Surname, Birthday, Gender, Phonenumber);
+                        Person _person = new Person(id, Name, Surname, Birthday, Gender, Phonenumber);
                         this.AddPerson(_person);
                     }
                 }
+                if (this.PersonCount > 0)
+                    lastID = this._bookPerson.FindElementInd(_bookPerson.Count - 1).ID;
+                else
+                    lastID = 0;
             }
             catch
             {
@@ -127,6 +153,10 @@ namespace BookPerson
             }
             return gettingList;
         }
+    }
+    class Authorization
+    {
+
     }
     
 }
