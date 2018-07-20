@@ -9,6 +9,8 @@ namespace BookPerson
 {
     public class Person
     {
+        
+
         public uint ID { get; private set; }
         public string Name { set; get; }
         public string Surname { set; get; }
@@ -44,6 +46,7 @@ namespace BookPerson
     }
     public class BookPersonManager
     {
+        private uint _intToDelete = 0;
         private uint _lastID;
         private const string PATH = "DB.dat";
         private Bidirectionallist<Person> _bookPerson = new Bidirectionallist<Person>();
@@ -66,22 +69,23 @@ namespace BookPerson
             _bookPerson.PushTail(person);
         }
 
-        public bool RemovePerson(int ID)
+        private bool localPredicate(Person pers)
         {
-            bool isRemove = false;
-            foreach (var elem in this._bookPerson)
-                if (elem.ID == ID)
-                {
-                    isRemove = _bookPerson.RemoveValue(elem);
-                }
-            return isRemove;
+            return (pers.ID == this._intToDelete);
+        }
+
+        public bool RemovePerson(uint ID)
+        {
+            _intToDelete = ID;
+
+            return _bookPerson.RemoveRequest(localPredicate, false);
         } 
 
-        public bool RemoveRequest(string request, int comparator)
+        /*public bool RemoveRequest(string request, int comparator)
         {
             
 
-        }
+        }*/
 
         public int Count {
             get { return this._bookPerson.Count; }
@@ -152,7 +156,6 @@ namespace BookPerson
             return true;
         }
 
-        public bool predIdLess()
 
         private Bidirectionallist<Person> SelectList(string request)
         {
