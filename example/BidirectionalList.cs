@@ -27,7 +27,10 @@ namespace Structure
         Element _tail;
         int _сount;
 
+        public delegate bool Predicate(Element el, int comparator);
+
         public Bidirectionallist() { }
+
         public Bidirectionallist (Bidirectionallist<T> list)
         {
             Element pointer = list._head;
@@ -129,6 +132,27 @@ namespace Structure
             else
 				findElement = null;
             return findElement.Data;
+        }
+        
+        public bool RemoveRequest(Predicate p, string removeOption)
+        {
+            bool isRemove = false;
+            bool flagRemove;
+            Element pointer = _head;
+            if (removeOption.ToLower() == "all")
+                flagRemove = pointer != null;
+            else
+                flagRemove = (pointer != null) && (!isRemove);
+            while (flagRemove)
+            {
+                if (p(pointer))
+                {
+                    this.RemoveOperation(pointer);
+                    isRemove = true;
+                }
+                pointer = pointer.Next;
+            }
+            return isRemove;
         }
 
         public int FindElement(T Data)

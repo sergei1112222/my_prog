@@ -9,13 +9,14 @@ namespace BookPerson
 {
     public class Person
     {
-        public uint ID { get; }
+        public uint ID { get; private set; }
         public string Name { set; get; }
         public string Surname { set; get; }
         public DateTime Birthday { set; get; }
         public char Gender { set; get; }
         public int Age { get { return GetAge(); } }
         public string Phonenumber { set; get; }
+
         public Person(uint id, string name, string surname, DateTime birthday, char gender, string phonenumber)
         {
             ID = id;
@@ -25,7 +26,8 @@ namespace BookPerson
             Gender = gender;
             //Age = GetAge();
             Phonenumber = phonenumber;
-        }
+        } 
+
         private int GetAge()
         {
             DateTime nowDate = DateTime.Today;
@@ -42,7 +44,7 @@ namespace BookPerson
     }
     public class BookPersonManager
     {
-        private uint lastID;
+        private uint _lastID;
         private const string PATH = "DB.dat";
         private Bidirectionallist<Person> _bookPerson = new Bidirectionallist<Person>();
 
@@ -50,15 +52,17 @@ namespace BookPerson
         {
             get { return _bookPerson.Count; }
         }
+
         public BookPersonManager() { }
+
         public void AddPerson(Person person)
         {
             _bookPerson.PushTail(person);
         }
+
         public void AddPerson(string name, string surname, DateTime birthday, char gender, string phonenumber)
         {
-            lastID++;
-            Person person = new Person(lastID, name, surname, birthday, gender, phonenumber);
+            Person person = new Person(++_lastID, name, surname, birthday, gender, phonenumber);
             _bookPerson.PushTail(person);
         }
 
@@ -73,6 +77,12 @@ namespace BookPerson
             return isRemove;
         } 
 
+        public bool RemoveRequest(string request, int comparator)
+        {
+            
+
+        }
+
         public int Count {
             get { return this._bookPerson.Count; }
         }
@@ -85,7 +95,6 @@ namespace BookPerson
 
         public Bidirectionallist<Person> SelectRequest(string request)
         {
-            //Bidirectionallist<Person> gettingList = new Bidirectionallist<Person>(BookPerson);
             return SelectList(request);
         }
 
@@ -112,6 +121,7 @@ namespace BookPerson
                 
             }
         }
+
         public bool ReadNotebook()
         {
             try
@@ -131,9 +141,9 @@ namespace BookPerson
                     }
                 }
                 if (this.PersonCount > 0)
-                    lastID = this._bookPerson.FindElementInd(_bookPerson.Count - 1).ID;
+                    _lastID = this._bookPerson.FindElementInd(_bookPerson.Count - 1).ID;
                 else
-                    lastID = 0;
+                    _lastID = 0;
             }
             catch
             {
@@ -141,6 +151,9 @@ namespace BookPerson
             }
             return true;
         }
+
+        public bool predIdLess()
+
         private Bidirectionallist<Person> SelectList(string request)
         {
             Bidirectionallist<Person> gettingList = new Bidirectionallist<Person>();
@@ -154,6 +167,7 @@ namespace BookPerson
             return gettingList;
         }
     }
+
     class Authorization
     {
 

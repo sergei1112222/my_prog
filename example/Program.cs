@@ -10,15 +10,14 @@ using BookPerson;
 
 namespace example
 {
-	class Program
+    
+
+    class Program
     {
-        public static void func(params int [] arr)
+        
+        public static uint summ (uint a, uint b)
         {
-            foreach (int elem in arr)
-            {
-                Console.WriteLine(elem);
-            }
-            Console.WriteLine(arr.Average());
+            return a + b;
         }
 
         static void Main(string[] args)
@@ -117,9 +116,8 @@ namespace example
             }
             else
                 Console.WriteLine("Reading from file is failed!");
-            
-            //int[] array = new int[] { 1, 2, 3 };
-            //func(1,2,3,4);
+           
+
 
         }
         
