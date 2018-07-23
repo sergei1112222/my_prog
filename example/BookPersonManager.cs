@@ -24,7 +24,6 @@ namespace BookPerson
             Surname = surname;
             Birthday = birthday;
             Gender = gender;
-            //Age = GetAge();
             Phonenumber = phonenumber;
         } 
 
@@ -35,9 +34,6 @@ namespace BookPerson
             if (Birthday > nowDate.AddYears(-age))
                 age--;
             return age;
-
-            //return now.Year - this.Birthday.Year - 1 +
-            //  ((now.Month > this.Birthday.Month || now.Month == this.Birthday.Month && now.Day >= this.Birthday.Day) ? 1 : 0);
         }
 
 
@@ -74,17 +70,8 @@ namespace BookPerson
 
         public bool RemovePerson(int ID)
         {
-            _intToDelete = ID;
-
-            Bidirectionallist<Person>.MyPredicate _prep = (pers) => pers.ID == ID;
-            return _bookPerson.RemoveRequest(_prep, false);
+            return _bookPerson.RemoveRequest(pers => pers.ID == ID, false);
         } 
-
-        /*public bool RemoveRequest(string request, int comparator)
-        {
-            
-
-        }*/
 
         public int Count {
             get { return this._bookPerson.Count; }
