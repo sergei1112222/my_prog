@@ -6,7 +6,7 @@ namespace Structure
 {
     public class Bidirectionallist<T> : IEnumerable<T>
     {
-        public delegate bool MyPredicate(T el);
+        //public delegate bool MyPredicate(T el);
         private class Element
         {
             public T Data { get; set; }
@@ -133,7 +133,7 @@ namespace Structure
             return findElement.Data;
         }
         
-        public bool RemoveRequest(MyPredicate p, bool removeOption)
+        public bool RemoveRequest(Func<T,bool> p, bool removeOption)
         {
             bool isRemove = false;
             bool flagRemove;
