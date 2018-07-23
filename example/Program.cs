@@ -10,12 +10,9 @@ using BookPerson;
 
 namespace example
 {
-    
-
     class Program
     {
-        
-        public static uint summ (uint a, uint b)
+        public static int summ (int a, int b)
         {
             return a + b;
         }

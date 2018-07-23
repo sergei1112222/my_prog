@@ -6,6 +6,7 @@ namespace Structure
 {
     public class Bidirectionallist<T> : IEnumerable<T>
     {
+        public delegate bool MyPredicate(T el);
         private class Element
         {
             public T Data { get; set; }
@@ -26,8 +27,6 @@ namespace Structure
         Element _head;
         Element _tail;
         int _сount;
-
-        public delegate bool Predicate(T el);
 
         public Bidirectionallist() { }
 
@@ -134,7 +133,7 @@ namespace Structure
             return findElement.Data;
         }
         
-        public bool RemoveRequest(Predicate p, bool removeOption)
+        public bool RemoveRequest(MyPredicate p, bool removeOption)
         {
             bool isRemove = false;
             bool flagRemove;
@@ -143,7 +142,7 @@ namespace Structure
                 flagRemove = pointer != null;
             else
                 flagRemove = (pointer != null) && (!isRemove);
-            while (flagRemove)
+            while ((pointer != null) && (!isRemove))
             {
                 if (p(pointer.Data))
                 {
@@ -206,7 +205,7 @@ namespace Structure
 
             return isRemove;
         }
-
+ 
         public bool RemoveValue(T Data)
         {
             bool isRemove = false;

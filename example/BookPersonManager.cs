@@ -9,9 +9,7 @@ namespace BookPerson
 {
     public class Person
     {
-        
-
-        public uint ID { get; private set; }
+        public int ID { get; private set; }
         public string Name { set; get; }
         public string Surname { set; get; }
         public DateTime Birthday { set; get; }
@@ -19,7 +17,7 @@ namespace BookPerson
         public int Age { get { return GetAge(); } }
         public string Phonenumber { set; get; }
 
-        public Person(uint id, string name, string surname, DateTime birthday, char gender, string phonenumber)
+        public Person(int id, string name, string surname, DateTime birthday, char gender, string phonenumber)
         {
             ID = id;
             Name = name;
@@ -46,8 +44,8 @@ namespace BookPerson
     }
     public class BookPersonManager
     {
-        private uint _intToDelete = 0;
-        private uint _lastID;
+        private int _intToDelete = 0;
+        private int _lastID;
         private const string PATH = "DB.dat";
         private Bidirectionallist<Person> _bookPerson = new Bidirectionallist<Person>();
 
@@ -69,16 +67,17 @@ namespace BookPerson
             _bookPerson.PushTail(person);
         }
 
-        private bool localPredicate(Person pers)
+        private bool LocalPredicate(Person pers)
         {
             return (pers.ID == this._intToDelete);
         }
 
-        public bool RemovePerson(uint ID)
+        public bool RemovePerson(int ID)
         {
             _intToDelete = ID;
 
-            return _bookPerson.RemoveRequest(localPredicate, false);
+            Bidirectionallist<Person>.MyPredicate _prep = (pers) => pers.ID == ID;
+            return _bookPerson.RemoveRequest(_prep, false);
         } 
 
         /*public bool RemoveRequest(string request, int comparator)
@@ -134,7 +133,7 @@ namespace BookPerson
                 {
                     while (reader.PeekChar() > -1)
                     {
-                        uint id = reader.ReadUInt32();
+                        int id = reader.ReadInt32();
                         string Name = reader.ReadString();
                         string Surname = reader.ReadString();
                         DateTime Birthday = Convert.ToDateTime(reader.ReadString());
@@ -155,7 +154,6 @@ namespace BookPerson
             }
             return true;
         }
-
 
         private Bidirectionallist<Person> SelectList(string request)
         {
