@@ -8,15 +8,10 @@ using Structure;
 using BookPerson;
 
 
-namespace example
+namespace PersonNotebook
 {
     class Program
     {
-        public static int summ (int a, int b)
-        {
-            return a + b;
-        }
-
         static void Main(string[] args)
         {
             void IsEmpty(out string str, string field)

@@ -44,8 +44,10 @@
   <ItemGroup>
     <Compile Include="BidirectionalList.cs" />
     <Compile Include="BookPersonManager.cs" />
+    <Compile Include="IAuthorisation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
