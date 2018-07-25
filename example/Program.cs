@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using Structure;
 using BookPerson;
+using Users;
 
 
 namespace PersonNotebook
@@ -29,11 +30,44 @@ namespace PersonNotebook
                     Console.WriteLine($"{elem.ID}. {elem.Name} {elem.Surname}, {elem.Birthday}, {elem.Age} years old, {elem.Gender},{elem.Phonenumber}");
                 }
             }
-
+            bool flagLogin = false;
             BookPersonManager bookManager = new BookPersonManager();
-            if (bookManager.ReadNotebook())
+            while (flagLogin)
+            {
+                Console.WriteLine("1. Log in");
+                Console.WriteLine("2. Sign up");
+                Console.WriteLine("3. Exit.");
+                int.TryParse(Console.ReadLine(), out int logChoice);
+                switch (logChoice)
+                {
+                    case 1:
+                        string uLogin = Console.ReadLine();
+                        string uPass = Console.ReadLine();
+                        User u = new User(uLogin, uPass);
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    default:
+                        break;
+
+
+                }
+
+
+                // Main operations
+            }
+
+
+
+
+
+            if (bookManager.ReadPersonData())
             {
                 bool flag = false;
+                
+                
                 while (!flag)
                 {
                     Console.WriteLine("1. Add person");

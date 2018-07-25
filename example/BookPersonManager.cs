@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Structure;
 using System.IO;
 using System.Numerics;
+using Users;
 
 
 namespace BookPerson
@@ -40,15 +41,21 @@ namespace BookPerson
     }
     public class BookPersonManager
     {
-        private int _intToDelete = 0;
-        private int _lastID;
-        private const string PATH = "DB.dat";
+        private const string PersonDataPATH = "DB.dat";
+        
+
+        
+        private int _lastIDPerson;
         private Bidirectionallist<Person> _bookPerson = new Bidirectionallist<Person>();
+        
+
+        #region Methods for working with Person
 
         public int PersonCount
         {
             get { return _bookPerson.Count; }
         }
+        
 
         public BookPersonManager() { }
 
@@ -59,13 +66,8 @@ namespace BookPerson
 
         public void AddPerson(string name, string surname, DateTime birthday, char gender, string phonenumber)
         {
-            Person person = new Person(++_lastID, name, surname, birthday, gender, phonenumber);
+            Person person = new Person(++_lastIDPerson, name, surname, birthday, gender, phonenumber);
             _bookPerson.PushTail(person);
-        }
-
-        private bool LocalPredicate(Person pers)
-        {
-            return (pers.ID == this._intToDelete);
         }
 
         public bool RemovePerson(int ID)
@@ -83,17 +85,20 @@ namespace BookPerson
             return gettingList;
         }
 
+        #endregion
+
+       
+
         public Bidirectionallist<Person> SelectRequest(string request)
         {
             return SelectList(request);
         }
 
-        
         public void SaveNotebook()
         {
             try
             {
-                using (BinaryWriter writer = new BinaryWriter(File.Open(PATH, FileMode.Create)))
+                using (BinaryWriter writer = new BinaryWriter(File.Open(PersonDataPATH, FileMode.Create)))
                 {
                     foreach (var elem in this._bookPerson)
                     {
@@ -112,28 +117,12 @@ namespace BookPerson
             }
         }
 
-        public bool ReadNotebook()
+        public bool ReadPersonData()
         {
+            readFromFile locReader = ReadNoteBookDataFromfile;
             try
             {
-                using (BinaryReader reader = new BinaryReader(File.Open(PATH, FileMode.OpenOrCreate)))
-                {
-                    while (reader.PeekChar() > -1)
-                    {
-                        int id = reader.ReadInt32();
-                        string Name = reader.ReadString();
-                        string Surname = reader.ReadString();
-                        DateTime Birthday = Convert.ToDateTime(reader.ReadString());
-                        char Gender = reader.ReadChar();
-                        string Phonenumber = reader.ReadString();
-                        Person _person = new Person(id, Name, Surname, Birthday, Gender, Phonenumber);
-                        this.AddPerson(_person);
-                    }
-                }
-                if (this.PersonCount > 0)
-                    _lastID = this._bookPerson.FindElementInd(_bookPerson.Count - 1).ID;
-                else
-                    _lastID = 0;
+                locReader();
             }
             catch
             {
@@ -154,6 +143,32 @@ namespace BookPerson
             }
             return gettingList;
         }
+
+        private void ReadNoteBookDataFromfile()
+        {
+            using (BinaryReader reader = new BinaryReader(File.Open(PersonDataPATH, FileMode.OpenOrCreate)))
+            {
+                while (reader.PeekChar() > -1)
+                {
+                    int id = reader.ReadInt32();
+                    string Name = reader.ReadString();
+                    string Surname = reader.ReadString();
+                    DateTime Birthday = Convert.ToDateTime(reader.ReadString());
+                    char Gender = reader.ReadChar();
+                    string Phonenumber = reader.ReadString();
+                    Person _person = new Person(id, Name, Surname, Birthday, Gender, Phonenumber);
+                    this.AddPerson(_person);
+                }
+            }
+            if (this.PersonCount > 0)
+                _lastIDPerson = this._bookPerson.FindElementInd(_bookPerson.Count - 1).ID;
+            else
+                _lastIDPerson = 0;
+        }
+
+        
+
+        private delegate void readFromFile();
     }
 
     class Authorization

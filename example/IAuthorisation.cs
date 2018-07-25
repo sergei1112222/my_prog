@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace example
+namespace Users
 {
     interface IAuthorisation
     {
-        bool IsAuthorised(string login, string passwors);
-        bool IsRegistration(string login, string password);
-
+        bool IsAuthorised(User user);
+        bool IsRegistration(User user);
     }
 }

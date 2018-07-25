@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authorisator.cs" />
     <Compile Include="BidirectionalList.cs" />
     <Compile Include="BookPersonManager.cs" />
     <Compile Include="IAuthorisation.cs" />
