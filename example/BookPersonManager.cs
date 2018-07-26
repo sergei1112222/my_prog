@@ -10,7 +10,7 @@ namespace BookPerson
 {
     public class Person
     {
-        public int ID { get; private set; }
+        public int Id { get; private set; }
         public string Name { set; get; }
         public string Surname { set; get; }
         public DateTime Birthday { set; get; }
@@ -20,7 +20,7 @@ namespace BookPerson
 
         public Person(int id, string name, string surname, DateTime birthday, char gender, string phonenumber)
         {
-            ID = id;
+            Id = id;
             Name = name;
             Surname = surname;
             Birthday = birthday;
@@ -36,17 +36,16 @@ namespace BookPerson
                 age--;
             return age;
         }
-
-
     }
+
     public class BookPersonManager
     {
-        private const string PersonDataPATH = "DB.dat";
-        
-
-        
+        private const string _personDataPath = "list.dat";  
         private int _lastIDPerson;
         private Bidirectionallist<Person> _bookPerson = new Bidirectionallist<Person>();
+
+        public User CurrentUser { get; set; }
+        readonly IAuthorization Authorizator;
         
 
         #region Methods for working with Person
@@ -56,12 +55,23 @@ namespace BookPerson
             get { return _bookPerson.Count; }
         }
         
-
-        public BookPersonManager() { }
+        public BookPersonManager(IAuthorization authorization) {
+            Authorizator = authorization;
+        }
 
         public void AddPerson(Person person)
         {
             _bookPerson.PushTail(person);
+        }
+
+        public void Authorization(string authLogin,string authPassword)
+        {
+            CurrentUser = Authorizator.Authorization(authLogin, authPassword);
+        }
+
+        public void Registration(string regLogin, string regPassword)
+        {
+            Authorizator.Registration(regLogin, regPassword);
         }
 
         public void AddPerson(string name, string surname, DateTime birthday, char gender, string phonenumber)
@@ -72,11 +82,11 @@ namespace BookPerson
 
         public bool RemovePerson(int ID)
         {
-            return _bookPerson.RemoveRequest(pers => pers.ID == ID, false);
+            return _bookPerson.RemoveRequest(pers => pers.Id == ID, false);
         } 
 
         public int Count {
-            get { return this._bookPerson.Count; }
+            get { return _bookPerson.Count; }
         }
 
         public Bidirectionallist<Person> GetPersonList()
@@ -86,9 +96,6 @@ namespace BookPerson
         }
 
         #endregion
-
-       
-
         public Bidirectionallist<Person> SelectRequest(string request)
         {
             return SelectList(request);
@@ -98,11 +105,11 @@ namespace BookPerson
         {
             try
             {
-                using (BinaryWriter writer = new BinaryWriter(File.Open(PersonDataPATH, FileMode.Create)))
+                using (BinaryWriter writer = new BinaryWriter(File.Open(CurrentUser.Login + _personDataPath, FileMode.Create)))
                 {
-                    foreach (var elem in this._bookPerson)
+                    foreach (var elem in _bookPerson)
                     {
-                        writer.Write(elem.ID);
+                        writer.Write(elem.Id);
                         writer.Write(elem.Name);
                         writer.Write(elem.Surname);
                         writer.Write(elem.Birthday.Date.ToString());
@@ -119,10 +126,9 @@ namespace BookPerson
 
         public bool ReadPersonData()
         {
-            readFromFile locReader = ReadNoteBookDataFromfile;
             try
             {
-                locReader();
+                ReadNoteBookDataFromfile();
             }
             catch
             {
@@ -146,7 +152,7 @@ namespace BookPerson
 
         private void ReadNoteBookDataFromfile()
         {
-            using (BinaryReader reader = new BinaryReader(File.Open(PersonDataPATH, FileMode.OpenOrCreate)))
+            using (BinaryReader reader = new BinaryReader(File.Open(CurrentUser.Login + _personDataPath, FileMode.OpenOrCreate)))
             {
                 while (reader.PeekChar() > -1)
                 {
@@ -161,19 +167,9 @@ namespace BookPerson
                 }
             }
             if (this.PersonCount > 0)
-                _lastIDPerson = this._bookPerson.FindElementInd(_bookPerson.Count - 1).ID;
+                _lastIDPerson = _bookPerson.FindElementInd(_bookPerson.Count - 1).Id;
             else
                 _lastIDPerson = 0;
         }
-
-        
-
-        private delegate void readFromFile();
     }
-
-    class Authorization
-    {
-
-    }
-    
 }

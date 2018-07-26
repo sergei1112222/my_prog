@@ -42,10 +42,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Authorisator.cs" />
+    <Compile Include="Authorizator.cs" />
     <Compile Include="BidirectionalList.cs" />
     <Compile Include="BookPersonManager.cs" />
-    <Compile Include="IAuthorisation.cs" />
+    <Compile Include="IAuthorization.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User.cs" />
