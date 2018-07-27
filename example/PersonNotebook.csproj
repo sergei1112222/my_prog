@@ -42,17 +42,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Authorizator.cs" />
-    <Compile Include="BidirectionalList.cs" />
+    <Compile Include="Authorization\Authorizator.cs" />
+    <Compile Include="Structure\BidirectionalList.cs" />
     <Compile Include="BookPersonManager.cs" />
     <Compile Include="IAuthorization.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -26,39 +26,23 @@ namespace Users
             ReadUserData();
         }
 
-        public User Authorization(string userLogin, string userPassword)
+        public User Authorize(string userLogin, string userPassword)
         {
-            User locUser = null;
-            foreach (var user in _userList)
-            {
-                if (user.Login == userLogin)
-                {
-                    if (Object.Equals(user.Password, Encoding.Default.GetString(MD5.Create().ComputeHash(Encoding.Default.GetBytes(userPassword)))))
-                    {
-                        locUser = user;
-                    }
-                }
-            }
+            string locHash = getMD5(userPassword);
+            User locUser = _userList.FirstOrDefault(user => (user.Login == userLogin) && (user.Password == locHash));
             if (locUser == null)
                 throw new Exception("Incorrect login or password!");
             return locUser;
         }
 
-        public void Registration(string userLogin, string userPassword)
+        public void Registrate(string userLogin, string userPassword)
         {
-            bool flagExistLogin = false;
-            foreach (var user in _userList)
-            {
-                if (user.Login == userLogin)
-                {
-                    flagExistLogin = true;
-                }
-            }
-            if (flagExistLogin)
+            User locUser = _userList.FirstOrDefault(user => (user.Login == userLogin));
+            if (locUser != null)
                 throw new Exception("User with such login is already registered!");
             else
             {
-                User newUser = new User(++_lastUserId, userLogin, userPassword, Role.admin);
+                User newUser = new User(++_lastUserId, getMD5(userLogin), userPassword, Role.Admin);
                 _userList.PushHead(newUser);
                 SaveUserList();
             }
@@ -118,15 +102,18 @@ namespace Users
                     string uLogin = reader.ReadString();
                     string uPass = reader.ReadString();
                     int role = reader.ReadInt32();
-                    User u = new User();
-                    u.SetUserData(id, uLogin, uPass, (Role)role);
-                    this.AddUser(u);
+                    this.AddUser(new User(id, uLogin, uPass, (Role)role));
                 }
             }
             if (this.UserCount > 0)
                 _lastUserId = this._userList.FindElementInd(_userList.Count - 1).Id;
             else
                 _lastUserId = 0;
+        }
+
+        private string getMD5(string inputString)
+        {
+            return Encoding.Default.GetString(MD5.Create().ComputeHash(Encoding.Default.GetBytes(inputString)));
         }
     }
 }

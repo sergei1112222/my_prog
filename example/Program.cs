@@ -168,11 +168,6 @@ namespace PersonNotebook
                         Console.WriteLine("Reading from file is failed!");
                 }
             }
-            
-            
-           
-
-
         }
         
     }

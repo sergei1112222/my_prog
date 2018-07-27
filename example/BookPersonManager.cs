@@ -45,19 +45,20 @@ namespace BookPerson
         private Bidirectionallist<Person> _bookPerson = new Bidirectionallist<Person>();
 
         public User CurrentUser { get; set; }
-        readonly IAuthorization Authorizator;
-        
-
-        #region Methods for working with Person
-
         public int PersonCount
         {
             get { return _bookPerson.Count; }
         }
-        
-        public BookPersonManager(IAuthorization authorization) {
+        readonly IAuthorization Authorizator;
+
+        public BookPersonManager(IAuthorization authorization)
+        {
             Authorizator = authorization;
         }
+
+        #region Methods for working with Person
+
+
 
         public void AddPerson(Person person)
         {
@@ -66,12 +67,12 @@ namespace BookPerson
 
         public void Authorization(string authLogin,string authPassword)
         {
-            CurrentUser = Authorizator.Authorization(authLogin, authPassword);
+            CurrentUser = Authorizator.Authorize(authLogin, authPassword);
         }
 
         public void Registration(string regLogin, string regPassword)
         {
-            Authorizator.Registration(regLogin, regPassword);
+            Authorizator.Registrate(regLogin, regPassword);
         }
 
         public void AddPerson(string name, string surname, DateTime birthday, char gender, string phonenumber)
