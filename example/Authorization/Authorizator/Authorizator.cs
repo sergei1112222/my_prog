@@ -15,11 +15,7 @@ namespace Users
 
         private int _lastUserId;
         private Bidirectionallist<User> _userList = new Bidirectionallist<User>();
-
-        public int UserCount
-        {
-            get { return _userList.Count; }
-        }
+        public int UserCount { get { return _userList.Count; } }
 
         public Authorizator()
         {
@@ -29,28 +25,51 @@ namespace Users
         public User Authorize(string userLogin, string userPassword)
         {
             string locHash = getMD5(userPassword);
-            User locUser = _userList.FirstOrDefault(user => (user.Login == userLogin) && (user.Password == locHash));
+            User locUser = _userList.FirstOrDefault(user => user.Login == userLogin && user.Password == locHash);
             if (locUser == null)
                 throw new Exception("Incorrect login or password!");
             return locUser;
         }
 
-        public void Registrate(string userLogin, string userPassword)
+        public void Register(string userLogin, string userPassword, Role role)
         {
-            User locUser = _userList.FirstOrDefault(user => (user.Login == userLogin));
+            User locUser = _userList.FirstOrDefault(user => user.Login == userLogin);
             if (locUser != null)
                 throw new Exception("User with such login is already registered!");
             else
             {
-                User newUser = new User(++_lastUserId, getMD5(userLogin), userPassword, Role.Admin);
-                _userList.PushHead(newUser);
+                User newUser = new User(++_lastUserId, userLogin, getMD5(userPassword), role);
+                _userList.PushTail(newUser);
                 SaveUserList();
             }
         }
 
+        public bool DeleteUser(int id)
+        {
+            User user = _userList.FirstOrDefault(u => u.Id == id);
+            if (user != null)
+            {
+                File.Delete(user.Login + "list.dat");
+                _userList.RemoveRequest(_user => _user.Id == id, false);
+                return true;
+            }
+            else
+                return false;
+        }
+
         public void SetAdmin(string adminLogin)
         {
-            //now it is empty method
+            User user = _userList.FirstOrDefault(u => u.Login == adminLogin);
+            if (user != null)
+            {
+                if (user.UserRole == Role.Admin)
+                    throw new Exception("This login is admin yet!");
+                else
+                    user.UserRole = Role.Admin;
+            }
+            else
+                throw new Exception("This login does not exist!");
+
         }
 
         public void AddUser(User user)
@@ -69,6 +88,11 @@ namespace Users
                 return false;
             }
             return true;
+        }
+
+        public Bidirectionallist<User> GetUserList()
+        {
+            return _userList;
         }
 
         public void SaveUserList()

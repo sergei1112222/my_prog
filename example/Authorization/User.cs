@@ -29,11 +29,4 @@ namespace Users
             UserRole = role;
         }
     }
-    s
-    public interface IAuthorization
-    {
-        User Authorize(string userLogin, string userPassword);
-        void Registrate(string userLogin, string userPassword);
-        void SetAdmin(string adminLogin);
-    }
 }

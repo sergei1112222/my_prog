@@ -43,36 +43,49 @@ namespace BookPerson
         private const string _personDataPath = "list.dat";  
         private int _lastIDPerson;
         private Bidirectionallist<Person> _bookPerson = new Bidirectionallist<Person>();
-
+        private IAuthorization Authorizator;
         public User CurrentUser { get; set; }
+        public int UserCount
+        {
+            get { return Authorizator.GetUserList().Count; }
+        }
         public int PersonCount
         {
             get { return _bookPerson.Count; }
         }
-        readonly IAuthorization Authorizator;
 
         public BookPersonManager(IAuthorization authorization)
         {
             Authorizator = authorization;
         }
 
-        #region Methods for working with Person
-
-
-
-        public void AddPerson(Person person)
+        public Bidirectionallist<User> GetUserList()
         {
-            _bookPerson.PushTail(person);
+            return Authorizator.GetUserList();
         }
 
-        public void Authorization(string authLogin,string authPassword)
+        public void Authorization(string authLogin, string authPassword)
         {
             CurrentUser = Authorizator.Authorize(authLogin, authPassword);
         }
 
-        public void Registration(string regLogin, string regPassword)
+        public void Registration(string regLogin, string regPassword, Role role)
         {
-            Authorizator.Registrate(regLogin, regPassword);
+            Authorizator.Register(regLogin, regPassword, role);
+        }
+        public void SetAdmin(string admLogin)
+        {
+            Authorizator.SetAdmin(admLogin);
+        }
+
+        public bool RemoveUser(int ID)
+        {
+            return Authorizator.DeleteUser(ID);
+        }
+
+        public void AddPerson(Person person)
+        {
+            _bookPerson.PushTail(person);
         }
 
         public void AddPerson(string name, string surname, DateTime birthday, char gender, string phonenumber)
@@ -86,17 +99,12 @@ namespace BookPerson
             return _bookPerson.RemoveRequest(pers => pers.Id == ID, false);
         } 
 
-        public int Count {
-            get { return _bookPerson.Count; }
-        }
-
         public Bidirectionallist<Person> GetPersonList()
         {
             Bidirectionallist<Person> gettingList = new Bidirectionallist<Person>(_bookPerson);
             return gettingList;
         }
 
-        #endregion
         public Bidirectionallist<Person> SelectRequest(string request)
         {
             return SelectList(request);

@@ -31,12 +31,10 @@ namespace PersonNotebook
                 }
             }
             bool flagLogin = false;
-           // BookPersonManager bookManager = new BookPersonManager(new Authorizator());
-            string uLogin;
-            string uPass;
-
             while (!flagLogin)
             {
+                string uLogin;
+                string uPass;
                 BookPersonManager bookManager = new BookPersonManager(new Authorizator());
                 Console.WriteLine("1. Log in");
                 Console.WriteLine("2. Sign up");
@@ -68,7 +66,15 @@ namespace PersonNotebook
                         IsEmpty(out uPass, "Password: ");
                         try
                         {
-                            bookManager.Registration(uLogin, uPass);
+                            Role newUserRole;
+                            if (bookManager.UserCount == 0)
+                            {
+                                newUserRole = Role.Admin;
+                                Console.WriteLine("You are admin, becouse you first user");
+                            } 
+                            else
+                                newUserRole = Role.User;
+                            bookManager.Registration(uLogin, uPass, newUserRole);
                         }
                         catch (Exception e)
                         {
@@ -95,7 +101,11 @@ namespace PersonNotebook
                             Console.WriteLine("2. Print notebook");
                             Console.WriteLine("3. Search");
                             Console.WriteLine("4. Delete");
-                            Console.WriteLine("5. Exit");
+                            Console.WriteLine("5. Add admin account");
+                            Console.WriteLine("6. Print user list");
+                            Console.WriteLine("7. Delete user");
+                            Console.WriteLine("8. Set user status");
+                            Console.WriteLine("9. Exit");
                             int.TryParse(Console.ReadLine(), out int choice);
                             switch (choice)
                             {
@@ -154,6 +164,94 @@ namespace PersonNotebook
                                     Console.WriteLine(" ");
                                     break;
                                 case 5:
+                                    if (bookManager.CurrentUser.UserRole == Role.Admin)
+                                    {
+                                        Console.Clear();
+                                        IsEmpty(out uLogin, "Login: ");
+                                        IsEmpty(out uPass, "Password: ");
+                                        try
+                                        {
+                                            bookManager.Registration(uLogin, uPass, Role.Admin);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Console.WriteLine(e.Message);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Access denied!");
+                                    }
+                                    break;
+                                case 6:
+                                    if (bookManager.CurrentUser.UserRole == Role.Admin)
+                                    {
+                                        Console.Clear();
+                                        foreach (var elem in bookManager.GetUserList())
+                                        {
+                                            Console.WriteLine($"{elem.Id}. {elem.Login}, {elem.UserRole}");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Access denied!");
+                                    }
+                                    break;
+                                case 7:
+                                    if (bookManager.CurrentUser.UserRole == Role.Admin)
+                                    { 
+                                        Console.Clear();
+                                        Console.WriteLine(" ");
+                                        Console.WriteLine("ID: ");
+                                        do
+                                        {
+                                            parseFlag = int.TryParse(Console.ReadLine(), out ID);
+                                            if (!parseFlag)
+                                                Console.WriteLine("Incorrect index! Repeat please...");
+                                        } while (!parseFlag);
+                                        if (ID == bookManager.CurrentUser.Id)
+                                        {
+                                            Console.WriteLine("You cannot delete yourself! Ask another admin to do this =))");
+                                        }
+                                        else
+                                        {
+                                            bookManager.RemoveUser(ID);
+                                            Console.Clear();
+                                            foreach (var elem in bookManager.GetUserList())
+                                            {
+                                                Console.WriteLine($"{elem.Id}. {elem.Login}, {elem.UserRole}");
+                                            }
+                                            Console.WriteLine(" ");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Access denied!");
+                                    }
+                                    break;
+                                case 8:
+                                    if (bookManager.CurrentUser.UserRole == Role.Admin)
+                                    {
+                                        Console.Clear();
+                                        Console.WriteLine("Level up user");
+                                        Console.WriteLine(" ");
+                                        IsEmpty(out uLogin, "Login: ");
+                                        try
+                                        {
+                                            bookManager.SetAdmin(uLogin);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Console.WriteLine(e.Message);
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Access denied!");
+                                    }
+                                    break;
+                                case 9:
                                     flag = true;
                                     Console.Clear();
                                     break;
