@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Structure
+namespace PersonNotebook.Common
 {
     public class Bidirectionallist<T> : IEnumerable<T>
     {

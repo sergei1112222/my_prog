@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Structure;
+using PersonNotebook.Common;
 using System.IO;
 using System.Numerics;
-using Users;
+using PersonNotebook.Authorization.Authorizator;
+using PersonNotebook.Authorization;
 
-
-namespace BookPerson
+namespace PersonNotebook
 {
     public class Person
     {
@@ -67,6 +67,7 @@ namespace BookPerson
         public void Authorization(string authLogin, string authPassword)
         {
             CurrentUser = Authorizator.Authorize(authLogin, authPassword);
+            ReadPersonData();
         }
 
         public void Registration(string regLogin, string regPassword, Role role)

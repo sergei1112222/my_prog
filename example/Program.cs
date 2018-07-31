@@ -4,15 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
-using Structure;
-using BookPerson;
-using Users;
+using PersonNotebook.Common;
+using PersonNotebook;
+using PersonNotebook.Authorization.Authorizator;
+using PersonNotebook.Authorization;
 
 
 namespace PersonNotebook
 {
+    
+
     class Program
     {
+        private static BookPersonManager bookManager;
+        
+        private static void Initialize()
+        {
+            bookManager = new BookPersonManager(new Authorizator());
+        }
+
         static void Main(string[] args)
         {
             void IsEmpty(out string str, string field)
@@ -31,11 +41,12 @@ namespace PersonNotebook
                 }
             }
             bool flagLogin = false;
+            Initialize();
             while (!flagLogin)
             {
                 string uLogin;
                 string uPass;
-                BookPersonManager bookManager = new BookPersonManager(new Authorizator());
+                
                 Console.WriteLine("1. Log in");
                 Console.WriteLine("2. Sign up");
                 Console.WriteLine("3. Exit.");
@@ -90,8 +101,7 @@ namespace PersonNotebook
                 }
                 if (bookManager.CurrentUser != null)
                 {
-                    if (bookManager.ReadPersonData())
-                    {
+                    
                         bool flag = false;
 
 
@@ -253,6 +263,7 @@ namespace PersonNotebook
                                     break;
                                 case 9:
                                     flag = true;
+                                    bookManager.CurrentUser = null;
                                     Console.Clear();
                                     break;
                                 default:
@@ -261,9 +272,6 @@ namespace PersonNotebook
                             }
                         }
                         bookManager.SaveNotebook();
-                    }
-                    else
-                        Console.WriteLine("Reading from file is failed!");
                 }
             }
         }

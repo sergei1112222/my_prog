@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Structure;
+using PersonNotebook.Common;
 using System.IO;
 using System.Security.Cryptography;
 
-namespace Users
+namespace PersonNotebook.Authorization.Authorizator
 {
     class Authorizator : IAuthorization
     {
